@@ -25,6 +25,34 @@ function star(x, y, radius1, radius2, npoints) {
     endShape(CLOSE);
 }
 
+function nightSky(canvasSize, starPixels, starCount) {
+    for (var a = 0; a < starCount; a++) {
+        var randX = Math.round((Math.random() * canvasSize));
+        var randY = Math.round((Math.random() * canvasSize));
+        fill(255, 255, 0);
+        circle(randX, randY, starPixels);
+    }
+}
+
+function fadingCircle(circleSize, center) {
+    for (var x = 0; x < circleSize; x = x + 6) {
+        fill(0, 0, 0 + x);
+        circle(center, center, circleSize - x);
+    }
+}
+
+function starPins(dist, starWidth, starSize, starPoints, innerWidth) {
+    fill(255);
+    for (var loc = 1; loc < 4; loc++) {
+        var yVal = 100;
+        if (loc == 2) {
+            yVal = 50;
+        } else yVal = 100;
+        star(dist * loc, yVal, starWidth, starSize, starPoints);
+        star(dist * loc, yVal, innerWidth, starSize, starPoints);
+    }
+}
+
 
 function setup() {
     createCanvas(canvasSize, canvasSize);
@@ -37,38 +65,25 @@ function draw() {
     let starSize = 30;
     let starWidth = 10;
     let starPoints = 6;
+    let starGap = 125;
     let pinSize = 80;
     let pinWidth = 10;
     let pinPoints = 4;
     let innerWidth = 1;
     let starPixels = 2;
+    let starCount = 500;
+    
 
     background(0);
 
     //Randomly place stars in background
-    for (var a = 0; a < 500; a++) {
-        var randX = Math.round((Math.random() * canvasSize));
-        var randY = Math.round((Math.random() * canvasSize));
-        fill(255, 255, 0);
-        circle(randX, randY, starPixels);
-    }
+    nightSky(canvasSize, starPixels, starCount);
 
     //Generate fading colour circle in background
-    for (var x = 0; x < circleSize; x = x + 6) {
-        fill(0, 0, 0 + x);
-        circle(center, center, circleSize - x);
-    }
+    fadingCircle(circleSize, center);
 
     //Make three stars and place them 125 pixels appart on the x axis
-    fill(255);
-    for (var loc = 1; loc < 4; loc++) {
-        var yVal = 100;
-        if (loc == 2) {
-            yVal = 50;
-        } else yVal = 100;
-        star(125 * loc, yVal, starWidth, starSize, starPoints);
-        star(125 * loc, yVal, innerWidth, starSize, starPoints);
-    }
+    starPins(starGap, starWidth, starSize, starPoints, innerWidth);
 
     //Place pin in the middle of the canvas
     star(center, center, pinWidth, pinSize, pinPoints);
